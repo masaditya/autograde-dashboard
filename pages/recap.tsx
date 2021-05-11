@@ -1,5 +1,6 @@
 import { getAssignment } from "lib/assignment";
 import { Table, Tag, Space } from "antd";
+import AuthGuard from "./_authguard";
 
 const columns = [
   {
@@ -39,5 +40,9 @@ export default function Recap({ assignments }) {
     console.log(key);
   }
 
-  return <Table columns={columns} dataSource={assignments} />;
+  return (
+    <AuthGuard>
+      <Table columns={columns} dataSource={assignments} />{" "}
+    </AuthGuard>
+  );
 }

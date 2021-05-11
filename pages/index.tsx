@@ -1,7 +1,10 @@
 import { Collapse, Row, Col, Avatar } from "antd";
 import { getAssignment } from "lib/assignment";
 import { SettingOutlined } from "@ant-design/icons";
+import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/client";
 
 export async function getStaticProps() {
   const assignments = await getAssignment();
@@ -13,9 +16,33 @@ export async function getStaticProps() {
 }
 
 export default function Home({ assignments }) {
+  const [session, loading] = useSession();
+  const router = useRouter();
+  console.log(session, loading);
   function callback(key) {
     console.log(key);
   }
+
+  return (
+    <>
+      {!session && (
+        <>
+          Not signed in <br />
+          <button onClick={() => signIn()}>Sign In</button>
+        </>
+      )}
+      {session && (
+        <>
+          Signed in as {session.user.email} <br />
+          <div>You can now access our super secret pages</div>
+          <button>
+            <Link href="/secret">To the secret</Link>
+          </button>
+          <button onClick={() => signOut()}>sign out</button>
+        </>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -63,3 +90,5 @@ const HeaderPanel = ({ data }) => {
     </Row>
   );
 };
+
+export const Page = () => {};
