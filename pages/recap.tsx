@@ -1,6 +1,6 @@
 import { getAssignment } from "lib/assignment";
 import { Table, Tag, Space } from "antd";
-import AuthGuard from "./_authguard";
+import AuthGuard from "pages/_authguard";
 
 const columns = [
   {
@@ -36,10 +36,6 @@ export async function getStaticProps() {
 }
 
 export default function Recap({ assignments }) {
-  function callback(key) {
-    console.log(key);
-  }
-
   return (
     <AuthGuard>
       <Table columns={columns} dataSource={assignments} />{" "}

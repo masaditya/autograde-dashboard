@@ -1,20 +1,24 @@
-import { useSession } from "next-auth/client";
+import { signIn, useSession } from "next-auth/client";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { Spin } from "antd";
+import { useEffect, useState } from "react";
+import { LoadingScreen } from "components/Layout/loadingscreen";
+import { Wrapper } from "components/Layout/wrapper";
 
 export default function AuthGuard({ children }) {
-  const [session : SE, loading] = useSession();
-
+  const [session, loading] = useSession();
+  const [loadDocs, setLoadDocs] = useState(false);
   const router = useRouter();
   useEffect(() => {
     if (!loading && !session) {
-      console.log(loading, session);
-      router.push("/");
+      signIn();
+    } else {
+      setLoadDocs(true);
     }
   }, [session, loading]);
 
   if (loading) return null;
 
-  return <> {!loading ? <Spin size="large" /> : children} </>;
+  return (
+    <> {!loadDocs ? <LoadingScreen /> : <Wrapper> {children} </Wrapper>}</>
+  );
 }
