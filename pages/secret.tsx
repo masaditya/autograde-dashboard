@@ -3,7 +3,6 @@ import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 
 export default function Secret() {
-  
 
   const [content, setContent] = useState("");
 

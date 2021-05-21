@@ -4,3 +4,4 @@ export async function getAssignment() {
   );
   return response.json();
 }
+
