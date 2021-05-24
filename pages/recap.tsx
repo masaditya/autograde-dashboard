@@ -1,6 +1,7 @@
 import { getAssignment } from "lib/assignment";
 import { Table, Tag, Space } from "antd";
 import AuthGuard from "pages/_authguard";
+import { API_AUTOGRADE } from "constant";
 
 const columns = [
   {
@@ -27,7 +28,7 @@ const columns = [
 ];
 
 export async function getStaticProps() {
-  const assignments = await getAssignment();
+  const assignments = await (await fetch(API_AUTOGRADE)).json();
   return {
     props: {
       assignments,
@@ -38,7 +39,9 @@ export async function getStaticProps() {
 export default function Recap({ assignments }) {
   return (
     <AuthGuard>
-      <Table columns={columns} dataSource={assignments} />{" "}
+      <div style={{ maxWidth: "100%" }}>
+        <Table columns={columns} dataSource={assignments} />
+      </div>
     </AuthGuard>
   );
 }

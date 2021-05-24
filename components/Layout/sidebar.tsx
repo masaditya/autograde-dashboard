@@ -2,14 +2,16 @@ import { Layout, Menu } from "antd";
 import { UserOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import Image from "next/image";
+import { useContext } from "react";
+import { AppContext } from "context/ContextWrapper";
 
 const Sidebar = () => {
+  const { studentClass, isDosen } = useContext(AppContext);
   return (
     <Layout.Sider
       style={{
         overflow: "auto",
         height: "100vh",
-        position: "fixed",
         left: 0,
       }}
     >
@@ -21,10 +23,13 @@ const Sidebar = () => {
       ></Image>
       <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
         <Menu.Item key="1" icon={<UserOutlined />}>
-          <Link href="/">Assignments</Link>
+          <Link href="/">Tugas</Link>
         </Menu.Item>
         <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-          <Link href="/recap">Recap</Link>
+          <Link href="/recap">Rekapitulasi</Link>
+        </Menu.Item>
+        <Menu.Item key="3" icon={<VideoCameraOutlined />}>
+          <Link href="/kelas">Kelas</Link>
         </Menu.Item>
       </Menu>
     </Layout.Sider>

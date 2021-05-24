@@ -12,18 +12,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ContextWrapper>
         <Component {...pageProps} />
       </ContextWrapper>
-      {/* <Layout>
-        <Sidebar />
-        <Layout className="site-layout" style={{ marginLeft: 200 }}>
-          <Header className="site-layout-background" style={{ padding: 0 }} />
-          <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
-            
-          </Content>
-          <Footer style={{ textAlign: "center" }}>
-            Ant Design ©2018 Created by Ant UED
-          </Footer>
-        </Layout>
-      </Layout> */}
     </Provider>
   );
 }

@@ -11,6 +11,7 @@ const options = {
   ],
   callbacks: {
     jwt: async (token, user, account, profile, isNewUser) => {
+      console.log("USER", {...user})
       const response = await fetch(
         "https://nostalgic-ramanujan-96cef2.netlify.app/.netlify/functions/signin",
         {
