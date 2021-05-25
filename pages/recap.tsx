@@ -40,7 +40,7 @@ export default function Recap({ assignments }) {
   return (
     <AuthGuard>
       <div style={{ maxWidth: "100%" }}>
-        <Table columns={columns} dataSource={assignments} />
+        <Table columns={columns} dataSource={assignments} rowKey="_id" />
       </div>
     </AuthGuard>
   );

@@ -6,3 +6,4 @@ export const API_ADD_KELAS = BASE_API + "/addclass";
 export const API_SIGNIN = `${BASE_API}/signin`;
 export const GET_BY_CLASS = BASE_API + "/getbyclass";
 export const GET_BY_USER = BASE_API + "/getbyclass";
+export const JOIN_CLASS = BASE_API + "/joinclass";

@@ -14,11 +14,14 @@ export default function AuthGuard({ children }) {
       signIn();
     } else {
       //@ts-ignore
-      session ? setIsDosen(session.user.user.role === "student") : setIsDosen(true)
+      session ? setIsDosen(session.user.role === "student") : setIsDosen(true);
       //@ts-ignore
-      session && setStudentClass(session.user.user.class) 
+      session && setStudentClass(session.user.class);
       setLoadDocs(true);
     }
+    return () => {
+      setLoadDocs(false);
+    };
   }, [session, loading]);
 
   if (loading) return null;

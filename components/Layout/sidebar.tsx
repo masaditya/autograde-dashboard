@@ -22,6 +22,9 @@ const Sidebar = () => {
         objectFit="scale-down"
       ></Image>
       <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+        <Menu.Item key="0" icon={<UserOutlined />}>
+          <Link href="/dashboard">Dashboard</Link>
+        </Menu.Item>
         <Menu.Item key="1" icon={<UserOutlined />}>
           <Link href="/">Tugas</Link>
         </Menu.Item>

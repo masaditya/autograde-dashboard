@@ -11,7 +11,9 @@ const options = {
   ],
   callbacks: {
     jwt: async (token, user, account, profile, isNewUser) => {
-      console.log("USER", {...user})
+      return token;
+    },
+    session: async (session, user, sessionToken) => {
       const response = await fetch(
         "https://nostalgic-ramanujan-96cef2.netlify.app/.netlify/functions/signin",
         {
@@ -19,15 +21,12 @@ const options = {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...user }),
+          body: JSON.stringify({ ...user, id: parseInt(user.sub) }),
         }
       );
       let data = await response.json();
-      response && (token.user = data);
-      return token; // ...here
-    },
-    session: async (session, user, sessionToken) => {
-      session.user = user;
+      response && (session.user = data);
+      // session.user = user;
       return session;
     },
   },
