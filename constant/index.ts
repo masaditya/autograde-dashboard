@@ -1,5 +1,7 @@
 export const BASE_API =
   "https://nostalgic-ramanujan-96cef2.netlify.app/.netlify/functions";
+export const EXT_API = "https://autograde-services.herokuapp.com";
+
 export const API_AUTOGRADE = BASE_API + "/autograde";
 export const API_KELAS = BASE_API + "/getclass";
 export const API_ADD_KELAS = BASE_API + "/addclass";

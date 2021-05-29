@@ -1,4 +1,3 @@
-import { getAssignment } from "lib/assignment";
 import AuthGuard from "./_authguard";
 import { Wrapper } from "components/Layout/wrapper";
 import { useSession } from "next-auth/client";
@@ -22,9 +21,9 @@ export default function Home({ classes }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    (!loading && !isDosen && studentClass == "") ? setVisible(true) : setVisible(false);
-    // if (true && false) setVisible(true);
-    return () => {};
+    !loading && !isDosen && studentClass == ""
+      ? setVisible(true)
+      : setVisible(false);
   }, [loading]);
 
   const onJoin = useCallback(
