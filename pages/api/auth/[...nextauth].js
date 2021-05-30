@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { API_SIGNIN } from "constants";
 
 const options = {
   providers: [
@@ -10,10 +9,10 @@ const options = {
     }),
   ],
   callbacks: {
-    jwt: async (token, user, account, profile, isNewUser) => {
+    jwt: async (token) => {
       return token;
     },
-    session: async (session, user, sessionToken) => {
+    session: async (session, user) => {
       const response = await fetch(
         "https://nostalgic-ramanujan-96cef2.netlify.app/.netlify/functions/signin",
         {
@@ -26,7 +25,6 @@ const options = {
       );
       let data = await response.json();
       response && (session.user = data);
-      // session.user = user;
       return session;
     },
   },
