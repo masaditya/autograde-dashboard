@@ -64,15 +64,18 @@ export const Accordion = () => {
   const { getFetch } = useFetcher();
 
   useEffect(() => {
-    if (!loading) getData(session.user);
+    if (!loading) {
+      getData(session.user);
+    }
     return () => {};
   }, [loading]);
 
   const getData = useCallback(async (user) => {
-    getFetch("/assignment",user.id).then((res) => {
+    getFetch("/assignment", user.id).then((res) => {
       setData(res);
     });
   }, []);
+
   return (
     <>
       <Collapse defaultActiveKey={["1"]} expandIconPosition="right">

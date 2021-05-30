@@ -9,12 +9,11 @@ export const useFetcher = () => {
   }, []);
 
   const postFetch = useCallback(async (endpoint, values) => {
-    const response = await fetch(EXT_API + endpoint, {
+    return fetch(`${EXT_API}${endpoint}`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
-    });
-    let data = await response.json();
-    return data;
+    }).then((res) => res.json());
   }, []);
 
   return { getFetch, postFetch };

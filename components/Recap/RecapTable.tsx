@@ -10,12 +10,25 @@ const RecapTable = () => {
 
   useEffect(() => {
     getData();
+    getClass();
+    getRepo();
   }, []);
 
   const getData = useCallback(async () => {
     getFetch("/assignment").then((res) => {
-      console.log(res);
       setData(res);
+    });
+  }, []);
+
+  const getRepo = useCallback(async () => {
+    getFetch("/repo").then((res) => {
+      console.log(res);
+    });
+  }, []);
+
+  const getClass = useCallback(async () => {
+    getFetch("/class").then((res) => {
+      console.log(res);
     });
   }, []);
 
@@ -60,10 +73,7 @@ const RecapTable = () => {
         a.pop();
         return <>{a.join("-")}</>;
       },
-      filters: [
-        { text: "test-assignment", value: "test-assignment" },
-        { text: "TI4A", value: "TI4A" },
-      ],
+      filters: [],
       filteredValue: filteredTugas || null,
       onFilter: (value, record) => record.repo_name.includes(value),
       ellipsis: true,
