@@ -1,13 +1,21 @@
 import { Card, Input } from "antd";
 import { Button, Modal, Form, Radio } from "antd";
-import moduleName from "antd";
-import AuthGuard from "./_authguard";
 import { KelasList } from "components/Kelas/KelasList";
+import { useFetcher } from "lib/useFetcher";
+import { EXT_API } from "constant";
 
-export default function Kelas() {
+export default function Kelas({ kelas }) {
+  console.log(kelas);
   return (
-    <AuthGuard>
-      <KelasList />
-    </AuthGuard>
+    <>
+      <KelasList classes={kelas} />
+    </>
   );
+}
+
+export async function getStaticProps() {
+  const kelas = await (await fetch(`${EXT_API}/class`)).json();
+  return {
+    props: { kelas },
+  };
 }

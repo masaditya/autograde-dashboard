@@ -3,15 +3,15 @@ import { AddKelas } from "components/Modal/AddKelas";
 import { useFetcher } from "lib/useFetcher";
 import { useCallback, useEffect, useState } from "react";
 
-export const KelasList = () => {
+export const KelasList = ({ classes }) => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const { postFetch, getFetch } = useFetcher();
-  const [kelas, setKelas] = useState([]);
+  const [kelas, setKelas] = useState(classes);
 
   useEffect(() => {
     // setKelas(classes.classes);
-    getData();
+    // getData();
   }, []);
 
   const getData = useCallback(() => {

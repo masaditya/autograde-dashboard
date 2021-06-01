@@ -7,6 +7,9 @@ const RecapTable = () => {
   const [filteredTugas, setFilteredTugas] = useState();
   const [data, setData] = useState([]);
   const { getFetch } = useFetcher();
+  const [repoFilter, setRepoFilter] = useState()
+  const [classFilter, setClassFilter] = useState()
+
 
   useEffect(() => {
     getData();
@@ -22,13 +25,13 @@ const RecapTable = () => {
 
   const getRepo = useCallback(async () => {
     getFetch("/repo").then((res) => {
-      console.log(res);
+      setRepoFilter(res)
     });
   }, []);
 
   const getClass = useCallback(async () => {
     getFetch("/class").then((res) => {
-      console.log(res);
+      setClassFilter(res)
     });
   }, []);
 

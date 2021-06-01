@@ -1,15 +1,10 @@
-import { Avatar, Collapse, Space } from "antd";
+import { Avatar, Collapse, Space, Button } from "antd";
 import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
 import { AppContext } from "context/ContextWrapper";
 import { useFetcher } from "lib/useFetcher";
 const { Panel } = Collapse;
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
 
 const HeaderPanel = ({ avatar, name, correct, detail, last_push }) => (
   <div
@@ -36,25 +31,28 @@ const HeaderPanel = ({ avatar, name, correct, detail, last_push }) => (
 );
 
 const BodyPanel = ({ detail }) => (
-  <div>
-    {detail.map((item, i) => {
-      if (item[0] === "✓") {
-        return (
-          <p key={i}>
-            <CheckCircleTwoTone twoToneColor="#52c41a" />
-            {item.substring(1)}
-          </p>
-        );
-      } else {
-        return (
-          <p key={i}>
-            <CloseCircleTwoTone twoToneColor="#eb2f96" />
-            {item.substring(1)}
-          </p>
-        );
-      }
-    })}
-  </div>
+  <Space size="large">
+    <div>
+      {detail.map((item, i) => {
+        if (item[0] === "✓") {
+          return (
+            <p key={i}>
+              <CheckCircleTwoTone twoToneColor="#52c41a" />
+              {item.substring(1)}
+            </p>
+          );
+        } else {
+          return (
+            <p key={i}>
+              <CloseCircleTwoTone twoToneColor="#eb2f96" />
+              {item.substring(1)}
+            </p>
+          );
+        }
+      })}
+    </div>
+    <Button size="large">Go To Repository</Button>
+  </Space>
 );
 
 export const Accordion = () => {
@@ -67,7 +65,6 @@ export const Accordion = () => {
     if (!loading) {
       getData(session.user);
     }
-    return () => {};
   }, [loading]);
 
   const getData = useCallback(async (user) => {

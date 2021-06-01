@@ -1,16 +1,16 @@
 import "antd/dist/antd.css";
 import { AppProps } from "next/app";
-import { Layout } from "antd";
-import { Provider, useSession } from "next-auth/client";
+import { Provider } from "next-auth/client";
 import { ContextWrapper } from "context/ContextWrapper";
-
-const { Header, Content, Footer } = Layout;
+import { Wrapper } from "components/Layout/wrapper";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider session={pageProps.session}>
       <ContextWrapper>
-        <Component {...pageProps} />
+        <Wrapper>
+          <Component {...pageProps} />
+        </Wrapper>
       </ContextWrapper>
     </Provider>
   );

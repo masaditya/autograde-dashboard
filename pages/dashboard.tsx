@@ -1,15 +1,19 @@
-import AuthGuard from "./_authguard";
-import { useSession } from "next-auth/client";
-import { useContext, useEffect, useState } from "react";
-import { AppContext } from "context/ContextWrapper";
-import { useCallback } from "react";
-import { useFetcher } from "lib/useFetcher";
-import { Accordion } from "components/Dashboard/Accordion";
+import { DashboardDiagram } from "components/Dashboard/DashboardDiagram";
+import { EXT_API } from "constant";
 
-export default function Dashboard({ classes }) {
+export default function Dashboard({ tugas }) {
   return (
-    <AuthGuard>
-      <Accordion />
-    </AuthGuard>
+    <>
+      <DashboardDiagram tugas={tugas} />
+    </>
   );
+}
+
+export async function getStaticProps() {
+  const res = await (await fetch(EXT_API + "/assignment")).json();
+  return {
+    props: {
+      tugas: res,
+    },
+  };
 }

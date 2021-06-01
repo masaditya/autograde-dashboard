@@ -1,10 +1,9 @@
-import AuthGuard from "./_authguard";
-import { Wrapper } from "components/Layout/wrapper";
 import { useSession } from "next-auth/client";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { AppContext } from "context/ContextWrapper";
-import { Modal, Card, Space, Button } from "antd";
-import { API_KELAS, JOIN_CLASS } from "constant";
+import { Modal, Card, Space, Button, notification } from "antd";
+import { API_KELAS, EXT_API, JOIN_CLASS } from "constant";
+import { Accordion } from "components/Dashboard/Accordion";
 
 export async function getStaticProps() {
   const classes = await (await fetch(API_KELAS)).json();
@@ -19,28 +18,38 @@ export default function Home({ classes }) {
   const [session, loading] = useSession();
   const { studentClass, isDosen } = useContext(AppContext);
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    !loading && !isDosen && studentClass == ""
+    !loading && !isDosen && !studentClass
       ? setVisible(true)
       : setVisible(false);
+    console.log(!loading, !isDosen, studentClass);
   }, [loading]);
 
   const onJoin = useCallback(
     async (item) => {
-      console.log({ ...session.user, class: item.class });
-      const response = await fetch(JOIN_CLASS, {
-        method: "POST",
-        mode: "no-cors",
+      setIsLoading(true);
+      // @ts-ignore
+      const response = await fetch(EXT_API + "/user/" + session.user.id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...session.user, class: item.class }),
       });
       let res = await response.json();
+      console.log(res);
+      notification.open({
+        message: "Sukses Bergabung Kelas",
+        description: "Selamat datang di kelas " + res.class,
+      });
+      setVisible(false);
+      setIsLoading(false);
     },
     [session, loading]
   );
 
   return (
-    <AuthGuard>
+    <>
       <Modal
         visible={visible}
         onCancel={() => setVisible(false)}
@@ -55,7 +64,15 @@ export default function Home({ classes }) {
                   key={i}
                   size="small"
                   title={item.class}
-                  extra={<Button onClick={() => onJoin(item)}>Join</Button>}
+                  extra={
+                    <Button
+                      disabled={isLoading}
+                      loading={isLoading}
+                      onClick={() => onJoin(item)}
+                    >
+                      Join
+                    </Button>
+                  }
                   style={{ width: 200 }}
                 >
                   <p>{item.matkul}</p>
@@ -64,6 +81,7 @@ export default function Home({ classes }) {
             })}
         </Space>
       </Modal>
-    </AuthGuard>
+      <Accordion />
+    </>
   );
 }

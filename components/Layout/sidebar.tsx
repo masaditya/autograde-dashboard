@@ -13,6 +13,7 @@ const Sidebar = () => {
         overflow: "auto",
         height: "100vh",
         left: 0,
+        background: "#234283",
       }}
     >
       <Image
@@ -21,7 +22,14 @@ const Sidebar = () => {
         height="auto"
         objectFit="scale-down"
       ></Image>
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+      <Menu
+        style={{
+          background: "#234283",
+        }}
+        theme="dark"
+        mode="inline"
+        defaultSelectedKeys={["1"]}
+      >
         <Menu.Item key="0" icon={<UserOutlined />}>
           <Link href="/dashboard">Dashboard</Link>
         </Menu.Item>
