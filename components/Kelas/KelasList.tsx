@@ -1,35 +1,42 @@
 import { Button, Card, Space } from "antd";
 import { AddKelas } from "components/Modal/AddKelas";
 import { useFetcher } from "lib/useFetcher";
+import { useSession } from "next-auth/client";
 import { useCallback, useEffect, useState } from "react";
 
 export const KelasList = ({ classes }) => {
-  const [loading, setLoading] = useState(false);
+  const [session, loading] = useSession();
+  const [isLoading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const { postFetch, getFetch } = useFetcher();
-  const [kelas, setKelas] = useState(classes);
+  const [kelas, setKelas] = useState([]);
 
   useEffect(() => {
-    // setKelas(classes.classes);
-    // getData();
-  }, []);
+    !loading && getData();
+    
+  }, [loading]);
 
   const getData = useCallback(() => {
-    getFetch("/class").then((res) => {
-      setKelas(res);
-    });
-  }, []);
+     // @ts-ignore
+    // getFetch("/class/dosen/"+session.user.id).then((res) => {
+    //   // setKelas(res);
+    //   console.log(res);
+    // });
+    const filteredClass = classes.filter(item => item.teacher == session.user.id)
+    setKelas(filteredClass)
+  }, [loading, session]);
 
   const onCreate = useCallback(
     async (values) => {
       setLoading(true);
-      postFetch("/class", values).then((res) => {
+      // @ts-ignore
+      postFetch("/class", {...values, teacher : session.user.id}).then((res) => {
         setKelas([...kelas, res]);
         setLoading(false);
         setVisible(false);
       });
     },
-    [kelas]
+    [kelas, loading, session]
   );
 
   return (
@@ -48,7 +55,7 @@ export const KelasList = ({ classes }) => {
         onCancel={() => {
           setVisible(false);
         }}
-        loading={loading}
+        loading={isLoading}
       />
       <br />
       <Space size={[8, 16]} wrap>

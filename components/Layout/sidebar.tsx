@@ -39,9 +39,9 @@ const Sidebar = () => {
         <Menu.Item key="2" icon={<VideoCameraOutlined />}>
           <Link href="/recap">Rekapitulasi</Link>
         </Menu.Item>
-        <Menu.Item key="3" icon={<VideoCameraOutlined />}>
+        {isDosen && <Menu.Item key="3" icon={<VideoCameraOutlined />}>
           <Link href="/kelas">Kelas</Link>
-        </Menu.Item>
+        </Menu.Item>}
       </Menu>
     </Layout.Sider>
   );

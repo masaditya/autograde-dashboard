@@ -1,25 +1,32 @@
-import { Form, Modal, Input } from "antd";
+import { Form, Modal, Input, Button } from "antd";
+import { useCallback } from "react";
 
 export const AddKelas = ({ visible, onCreate, onCancel, loading }) => {
   const [form] = Form.useForm();
+
+  const onSubmit = useCallback(() => {
+    form
+      .validateFields()
+      .then((values) => {
+        form.resetFields();
+        onCreate(values);
+      })
+      .catch((info) => {
+        console.log("Validate Failed:", info);
+      });
+  }, [form, onCreate]);
+
   return (
     <Modal
       visible={visible}
       title="Buat Kelas Baru"
-      okText="Tambah"
-      cancelText="Batal"
       onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
-            form.resetFields();
-            onCreate(values);
-          })
-          .catch((info) => {
-            console.log("Validate Failed:", info);
-          });
-      }}
+      onOk={onSubmit}
+      footer={[
+        <Button key="submit" type="primary" loading={loading} onClick={onSubmit}>
+          Submit
+        </Button>,
+      ]}
     >
       <Form form={form} layout="vertical" name="form_add_kelas">
         <Form.Item
@@ -45,6 +52,18 @@ export const AddKelas = ({ visible, onCreate, onCancel, loading }) => {
           ]}
         >
           <Input placeholder="contoh. Pemrograman Berbasis Framework" />
+        </Form.Item>
+        <Form.Item
+          name="code"
+          label="Kode Mata Kuliah"
+          rules={[
+            {
+              required: true,
+              message: "Masukan Kode Mata Kuliah",
+            },
+          ]}
+        >
+          <Input placeholder="contoh. PWL, ProgWeb" />
         </Form.Item>
       </Form>
     </Modal>
