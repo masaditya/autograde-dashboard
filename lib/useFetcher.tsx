@@ -16,5 +16,13 @@ export const useFetcher = () => {
     }).then((res) => res.json());
   }, []);
 
-  return { getFetch, postFetch };
+  const putFetch = useCallback(async (endpoint, values) => {
+    return fetch(`${EXT_API}${endpoint}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    }).then((res) => res.json());
+  }, []);
+
+  return { getFetch, postFetch, putFetch };
 };
