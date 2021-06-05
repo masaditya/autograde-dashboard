@@ -14,7 +14,7 @@ const options = {
     },
     session: async (session, user) => {
       const response = await fetch(
-        "https://nostalgic-ramanujan-96cef2.netlify.app/.netlify/functions/signin",
+        "http://localhost:8888/user",
         {
           method: "POST",
           headers: {
@@ -24,7 +24,8 @@ const options = {
         }
       );
       let data = await response.json();
-      response && (session.user = data);
+      console.log("DATA", data)
+      response && (session.user = {...session.user, ...data});
       return session;
     },
   },

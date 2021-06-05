@@ -27,6 +27,7 @@ const Admin = ({ users }) => {
       console.log(err)
     })
   }, []);
+  console.log(users);
 
   const columns = [
     {
@@ -43,18 +44,18 @@ const Admin = ({ users }) => {
     },
     {
       title: "Kelas",
-      key: "class",
-      dataIndex: "class",
+      key: "kelas",
+      dataIndex: "kelas",
       render: (cl: any[]) => {
         return (
           <>
-            {/* {cl.map((item, i) => {
+            {cl.map((item, i) => {
             return (
               <Tag color={"green"} key={i}>
-                Test
+                {item.class}
               </Tag>
             );
-          })} */}
+          })}
           </>
         );
       },

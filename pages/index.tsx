@@ -4,21 +4,26 @@ import { AppContext } from "context/ContextWrapper";
 import { Modal, Card, Space, Button, notification } from "antd";
 import { API_KELAS, EXT_API, JOIN_CLASS } from "constant";
 import { Accordion } from "components/Dashboard/Accordion";
+import { useFetcher } from "lib/useFetcher";
+import { DashboardDiagram } from "components/Dashboard/DashboardDiagram";
 
 export async function getStaticProps() {
   const classes = await (await fetch(API_KELAS)).json();
+  const res = await (await fetch(EXT_API + "/assignment")).json();
   return {
     props: {
       classes,
+      tugas: res,
     },
   };
 }
 
-export default function Home({ classes }) {
+export default function Home({ classes, tugas }) {
   const [session, loading] = useSession();
   const { studentClass, isDosen } = useContext(AppContext);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { putFetch } = useFetcher();
 
   useEffect(() => {
     !loading && !isDosen && !studentClass
@@ -30,17 +35,14 @@ export default function Home({ classes }) {
   const onJoin = useCallback(
     async (item) => {
       setIsLoading(true);
-      // @ts-ignore
-      const response = await fetch(EXT_API + "/user/" + session.user.id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...session.user, class: item.class }),
+      const response = await putFetch("/class", {
+        student: session.user,
+        kelas: item,
       });
-      let res = await response.json();
-      console.log(res);
+      console.log(response);
       notification.open({
         message: "Sukses Bergabung Kelas",
-        description: "Selamat datang di kelas " + res.class,
+        description: "Selamat datang di kelas !" + response.class,
       });
       setVisible(false);
       setIsLoading(false);
@@ -81,7 +83,7 @@ export default function Home({ classes }) {
             })}
         </Space>
       </Modal>
-      <Accordion />
+      <DashboardDiagram tugas={tugas} />
     </>
   );
 }

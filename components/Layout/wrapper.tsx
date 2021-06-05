@@ -24,7 +24,7 @@ export const Wrapper = ({ children }) => {
       //@ts-ignore
       session ? setIsDosen(session.user.role !== "student") : setIsDosen(false);
       //@ts-ignore
-      session && setStudentClass(session.user.class);
+      session && setStudentClass(session.user.kelas);
       setLoadDocs(true);
     }
     return () => {

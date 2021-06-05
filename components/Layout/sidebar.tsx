@@ -30,11 +30,8 @@ const Sidebar = () => {
         mode="inline"
         defaultSelectedKeys={["1"]}
       >
-        <Menu.Item key="0" icon={<UserOutlined />}>
-          <Link href="/dashboard">Dashboard</Link>
-        </Menu.Item>
         <Menu.Item key="1" icon={<UserOutlined />}>
-          <Link href="/">Tugas</Link>
+          <Link href="/">Dashboard</Link>
         </Menu.Item>
         <Menu.Item key="2" icon={<VideoCameraOutlined />}>
           <Link href="/recap">Rekapitulasi</Link>
