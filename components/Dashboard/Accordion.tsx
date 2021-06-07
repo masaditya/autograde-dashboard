@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
 import { AppContext } from "context/ContextWrapper";
 import { useFetcher } from "lib/useFetcher";
+import Link from "next/link";
 const { Panel } = Collapse;
 
 const HeaderPanel = ({ avatar, name, correct, detail, last_push }) => (
@@ -30,7 +31,7 @@ const HeaderPanel = ({ avatar, name, correct, detail, last_push }) => (
   </div>
 );
 
-const BodyPanel = ({ detail }) => (
+const BodyPanel = ({ detail, repo_url }) => (
   <Space size="large">
     <div>
       {detail.map((item, i) => {
@@ -51,7 +52,9 @@ const BodyPanel = ({ detail }) => (
         }
       })}
     </div>
-    <Button size="large">Go To Repository</Button>
+    <Link href={repo_url}>
+      <Button size="large">Go To Repository</Button>
+    </Link>
   </Space>
 );
 

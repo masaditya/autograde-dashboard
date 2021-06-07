@@ -1,4 +1,14 @@
-import { Card, Col, Row, Space, Progress, Skeleton, Layout, Image } from "antd";
+import {
+  Card,
+  Col,
+  Row,
+  Space,
+  Progress,
+  Skeleton,
+  Layout,
+  Image,
+  Divider,
+} from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import { useEffect, useMemo, useState } from "react";
 import Title from "antd/lib/typography/Title";
@@ -39,6 +49,7 @@ export const DashboardDiagram = ({ tugas = [] }) => {
   return (
     <>
       <Layout>
+        <Divider orientation="left">Statistik</Divider>
         <Row gutter={24}>
           <Col span={8}>
             <Card>
@@ -71,6 +82,7 @@ export const DashboardDiagram = ({ tugas = [] }) => {
         </Row>
       </Layout>
       <Layout>
+        <Divider orientation="left">Informasi Pengguna</Divider>
         <Row gutter={24} justify="space-around" align="middle">
           <Col span={16}>
             <Card>
@@ -97,6 +109,7 @@ export const DashboardDiagram = ({ tugas = [] }) => {
           </Col>
         </Row>
       </Layout>
+      <Divider orientation="left">Kelas yang di ikuti</Divider>
       <Space size={[8, 16]} wrap>
         {!loading &&
           user &&

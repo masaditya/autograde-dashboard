@@ -10,8 +10,7 @@ const Sidebar = () => {
   return (
     <Layout.Sider
       style={{
-        overflow: "auto",
-        height: "100vh",
+        minHeight: "100vh",
         left: 0,
         background: "#234283",
       }}
@@ -30,21 +29,25 @@ const Sidebar = () => {
         mode="inline"
         defaultSelectedKeys={["1"]}
       >
-        <Menu.Item key="1" icon={<UserOutlined />}>
+        {!isDosen && <Menu.Item key="1" icon={<UserOutlined />}>
           <Link href="/">Dashboard</Link>
-        </Menu.Item>
-        <Menu.Item key="4" icon={<UserOutlined />}>
+        </Menu.Item>}
+        { !isDosen && <Menu.Item key="4" icon={<UserOutlined />}>
           <Link href="/mhs/tugas">Tugas</Link>
-        </Menu.Item>
-        <Menu.Item key="2" icon={<VideoCameraOutlined />}>
+        </Menu.Item>}
+        {isDosen && <Menu.Item key="2" icon={<VideoCameraOutlined />}>
           <Link href="/recap">Rekapitulasi</Link>
-        </Menu.Item>
-        {isDosen && <Menu.Item key="3" icon={<VideoCameraOutlined />}>
-          <Link href="/kelas">Kelas</Link>
         </Menu.Item>}
-        {!isDosen && <Menu.Item key="3" icon={<VideoCameraOutlined />}>
-          <Link href="/mhs/kelas">Kelas</Link>
-        </Menu.Item>}
+        {isDosen && (
+          <Menu.Item key="3" icon={<VideoCameraOutlined />}>
+            <Link href="/kelas">Kelas</Link>
+          </Menu.Item>
+        )}
+        {!isDosen && (
+          <Menu.Item key="3" icon={<VideoCameraOutlined />}>
+            <Link href="/mhs/kelas">Kelas</Link>
+          </Menu.Item>
+        )}
       </Menu>
     </Layout.Sider>
   );

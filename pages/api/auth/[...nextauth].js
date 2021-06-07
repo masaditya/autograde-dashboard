@@ -14,7 +14,7 @@ const options = {
     },
     session: async (session, user) => {
       const response = await fetch(
-        "http://localhost:8888/user",
+        "http://autograde-services.herokuapp.com/user",
         {
           method: "POST",
           headers: {

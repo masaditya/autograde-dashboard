@@ -31,26 +31,11 @@ export default function Home({ classes, tugas }) {
       : setVisible(false);
   }, [loading]);
 
-  const onJoin = useCallback(
-    async (item) => {
-      setIsLoading(true);
-      const response = await putFetch("/class", {
-        student: session.user,
-        kelas: item,
-      });
-      notification.open({
-        message: "Sukses Bergabung Kelas",
-        description: "Selamat datang di kelas !" + response.class,
-      });
-      setVisible(false);
-      setIsLoading(false);
-    },
-    [session, loading]
-  );
+  
 
   return (
     <>
-      <Modal
+      {/* <Modal
         visible={visible}
         onCancel={() => setVisible(false)}
         footer={null}
@@ -80,7 +65,7 @@ export default function Home({ classes, tugas }) {
               );
             })}
         </Space>
-      </Modal>
+      </Modal> */}
       <DashboardDiagram tugas={tugas} />
     </>
   );
