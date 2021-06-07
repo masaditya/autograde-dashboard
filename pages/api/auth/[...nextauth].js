@@ -24,7 +24,6 @@ const options = {
         }
       );
       let data = await response.json();
-      console.log("DATA", data)
       response && (session.user = {...session.user, ...data});
       return session;
     },

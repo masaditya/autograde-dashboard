@@ -1,9 +1,17 @@
-import { Button, Card, Space } from "antd";
+import { Button, Card, Space, Tooltip } from "antd";
 import { AddKelas } from "components/Modal/AddKelas";
 import { useFetcher } from "lib/useFetcher";
 import { useSession } from "next-auth/client";
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 
+import {
+  SettingOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+  EyeOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 export const KelasList = ({ classes }) => {
   const [session, loading] = useSession();
   const [isLoading, setLoading] = useState(false);
@@ -13,28 +21,31 @@ export const KelasList = ({ classes }) => {
 
   useEffect(() => {
     !loading && getData();
-    
   }, [loading]);
 
   const getData = useCallback(() => {
-     // @ts-ignore
     // getFetch("/class/dosen/"+session.user.id).then((res) => {
     //   // setKelas(res);
     //   console.log(res);
     // });
-    const filteredClass = classes.filter(item => item.teacher == session.user.id)
-    setKelas(filteredClass)
+    const filteredClass = classes.filter(
+      // @ts-ignore
+      (item) => item.teacher == session.user.id
+    );
+    setKelas(filteredClass);
   }, [loading, session]);
 
   const onCreate = useCallback(
     async (values) => {
       setLoading(true);
       // @ts-ignore
-      postFetch("/class", {...values, teacher : session.user.id}).then((res) => {
-        setKelas([...kelas, res]);
-        setLoading(false);
-        setVisible(false);
-      });
+      postFetch("/class", { ...values, teacher: session.user.id }).then(
+        (res) => {
+          setKelas([...kelas, res]);
+          setLoading(false);
+          setVisible(false);
+        }
+      );
     },
     [kelas, loading, session]
   );
@@ -67,6 +78,15 @@ export const KelasList = ({ classes }) => {
                 size="small"
                 title={item.class}
                 // extra={<a href="#">More</a>}
+                actions={[
+                  <DeleteOutlined key="setting" />,
+                  <EditOutlined key="edit" />,
+                  <Tooltip title="Lihat Kelas">
+                    <Link href={"/kelas/"+item.class}>
+                      <EyeOutlined key="ellipsis" />
+                    </Link>
+                  </Tooltip>,
+                ]}
                 style={{ width: 300 }}
               >
                 <p>{item.matkul}</p>

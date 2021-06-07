@@ -68,7 +68,7 @@ export const Accordion = () => {
   }, [loading]);
 
   const getData = useCallback(async (user) => {
-    getFetch("/assignment", user.id).then((res) => {
+    getFetch("/assignment/" + user.id).then((res) => {
       setData(res);
     });
   }, []);

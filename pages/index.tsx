@@ -29,7 +29,6 @@ export default function Home({ classes, tugas }) {
     !loading && !isDosen && !studentClass
       ? setVisible(true)
       : setVisible(false);
-    console.log(!loading, !isDosen, studentClass);
   }, [loading]);
 
   const onJoin = useCallback(
@@ -39,7 +38,6 @@ export default function Home({ classes, tugas }) {
         student: session.user,
         kelas: item,
       });
-      console.log(response);
       notification.open({
         message: "Sukses Bergabung Kelas",
         description: "Selamat datang di kelas !" + response.class,

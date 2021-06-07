@@ -20,14 +20,9 @@ const Admin = ({ users }) => {
   );
 
   const submitChangeRole = useCallback(async(record : any) => {
-    console.log({...record, role : "dosen"});
     putFetch("/user", {...record, role : "dosen"}).then(res => {
-      console.log(res);
-    }).catch(err => {
-      console.log(err)
     })
   }, []);
-  console.log(users);
 
   const columns = [
     {
