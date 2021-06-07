@@ -40,7 +40,7 @@ export const Wrapper = ({ children }) => {
         <>
           <Head>
             <title> Autograde System Dashboard </title>
-            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"></meta>
           </Head>
           <Layout>
             <Sidebar />
