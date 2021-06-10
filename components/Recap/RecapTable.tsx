@@ -1,10 +1,12 @@
 import { Space, Table, Button } from "antd";
 import { useFetcher } from "lib/useFetcher";
+import { useSession } from "next-auth/client";
 import { useCallback, useEffect, useState } from "react";
 
 const RecapTable = () => {
   const [filteredClass, setFilteredClass] = useState();
   const [filteredTugas, setFilteredTugas] = useState();
+  const [session, loading] = useSession();
   const [data, setData] = useState([]);
   const { getFetch } = useFetcher();
   const [repoFilter, setRepoFilter] = useState([]);
@@ -17,16 +19,18 @@ const RecapTable = () => {
   }, []);
 
   const getData = () => {
-    getFetch("/assignment").then((res) => {
-      setData(res);
-      let arr = [];
-      res.forEach((item) => {
-        let tmp = item.repo_name.split("-");
-        var index = arr.findIndex((x) => x.text == tmp[1]);
-        index === -1 && arr.push({ text: tmp[1], value: tmp[1] });
+    !loading &&
+      // @ts-ignore
+      getFetch("/assignment/dosen/" + session.user.code_dosen).then((res) => {
+        setData(res);
+        let arr = [];
+        res.forEach((item) => {
+          let tmp = item.repo_name.split("-");
+          var index = arr.findIndex((x) => x.text == tmp[1]);
+          index === -1 && arr.push({ text: tmp[1], value: tmp[1] });
+        });
+        setRepoFilter(arr);
       });
-      setRepoFilter(arr);
-    });
   };
 
   const getRepo = useCallback(async () => {

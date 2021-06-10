@@ -77,7 +77,7 @@ export default function Kelasku({ kelas }) {
               <Card
                 key={i}
                 size="small"
-                title={"TI4A"}
+                title={item.class}
                 extra={<a onClick={() => onJoin(item)}>Bergabung</a>}
                 style={{ width: 300 }}
               >
