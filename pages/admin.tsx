@@ -4,11 +4,23 @@ import { EXT_API } from "constant";
 import { useFetcher } from "lib/useFetcher";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-const Admin = ({ users }) => {
-  const {putFetch} = useFetcher()
+const Admin = () => {
+  const { putFetch, getFetch } = useFetcher();
   const [visible, setVisible] = useState(false);
+  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [studentData, setStudentData] = useState([]);
+  const [teacherData, setTeacherData] = useState([]);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    getFetch(EXT_API + "/user")
+      .then((res) => res.json())
+      .then((data) => {
+        setStudentData(data.filter((item) => item.role === "student"));
+        setTeacherData(data.filter((item) => item.role !== "student"));
+      });
+  }, []);
 
   const st = useMemo(
     () => users.filter((item) => item.role === "student"),
@@ -19,9 +31,8 @@ const Admin = ({ users }) => {
     users
   );
 
-  const submitChangeRole = useCallback(async(record : any) => {
-    putFetch("/user", {...record, role : "dosen"}).then(res => {
-    })
+  const submitChangeRole = useCallback(async (record: any) => {
+    putFetch("/user", { ...record, role: "dosen" }).then((res) => {});
   }, []);
 
   const columns = [
@@ -45,12 +56,12 @@ const Admin = ({ users }) => {
         return (
           <>
             {cl.map((item, i) => {
-            return (
-              <Tag color={"green"} key={i}>
-                {item.class}
-              </Tag>
-            );
-          })}
+              return (
+                <Tag color={"green"} key={i}>
+                  {item.class}
+                </Tag>
+              );
+            })}
           </>
         );
       },
@@ -77,9 +88,9 @@ const Admin = ({ users }) => {
   return (
     <div>
       <Title level={3}>Dosen</Title>
-      <Table columns={columns} dataSource={te} rowKey="_id" />
+      <Table columns={columns} dataSource={teacherData} rowKey="_id" />
       <Title level={3}>Mahasiswa</Title>
-      <Table columns={columns} dataSource={st} rowKey="_id" />
+      <Table columns={columns} dataSource={studentData} rowKey="_id" />
 
       <Modal
         visible={visible}
@@ -131,12 +142,3 @@ const Admin = ({ users }) => {
 };
 
 export default Admin;
-
-export async function getStaticProps() {
-  const res = await (await fetch(EXT_API + "/user")).json();
-  return {
-    props: {
-      users: res,
-    },
-  };
-}

@@ -14,25 +14,37 @@ import { useSession } from "next-auth/client";
 import { useEffect, useState } from "react";
 
 const { Paragraph } = Typography;
-export default function Profile() {
+
+export default function DosenDashboard() {
   const [session, loading] = useSession();
   const [tugas, setTugas] = useState<any>([]);
   const [user, setUser] = useState<any>();
-  const { getFetch } = useFetcher();
+  const { getFetch, putFetch } = useFetcher();
   const [kodeDosen, setKodeDosen] = useState("");
+  const [repo, setRepo] = useState();
 
   useEffect(() => {
     if (!loading) {
       setUser(session.user);
       // @ts-ignore
+      setKodeDosen(session.user.code_dosen);
+      // @ts-ignore
       // getFetch("/assignment/" + session.user.id).then((res) => {
       //   console.log(res);
       //   setTugas(res);
       // });
+      getFetch("/repo/" + session.user.code_dosen).then((res) => {
+        console.log(res);
+        setRepo(res);
+      });
     }
   }, [loading]);
 
-  
+  const submitCodeDosen = (ev: any) => {
+    putFetch("/user/dosen/" + user.id, { code_dosen: ev }).then((res) => {
+      console.log(res);
+    });
+  };
 
   return (
     <>
@@ -45,12 +57,19 @@ export default function Profile() {
                 <>
                   <Space direction="vertical">
                     <Space> Nama : {user.name || ""} </Space>
+                    <Space> Username : {user.username || ""} </Space>
                     <Space> Email : {user.email || ""} </Space>
                     <Space>
                       Kode Dosen :
-                      <Paragraph editable={{ onChange: setKodeDosen }}>
-                        {kodeDosen}
-                      </Paragraph>
+                      {!kodeDosen ? (
+                        <Paragraph
+                          editable={{ onChange: (ev) => submitCodeDosen(ev) }}
+                        >
+                          {kodeDosen}
+                        </Paragraph>
+                      ) : (
+                        user.code_dosen || ""
+                      )}
                     </Space>
                   </Space>
                 </>
@@ -69,6 +88,25 @@ export default function Profile() {
             </Card>
           </Col>
         </Row>
+        <Divider orientation="left">Informasi Tugas</Divider>
+        <Space size={[8, 16]} wrap>
+          {!loading &&
+            repo &&
+            // @ts-ignore
+            repo.map((item, i) => {
+              return (
+                <Card
+                  key={i}
+                  size="small"
+                  title={""}
+                  // extra={<a href="#">More</a>}
+                  style={{ width: 300 }}
+                >
+                  <p>{item.repo}</p>
+                </Card>
+              );
+            })}
+        </Space>
       </Layout>
     </>
   );

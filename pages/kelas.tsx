@@ -1,17 +1,10 @@
 import { KelasList } from "components/Kelas/KelasList";
 import { EXT_API } from "constant";
 
-export default function Kelas({ kelas }) {
+export default function Kelas() {
   return (
     <>
-      <KelasList classes={kelas} />
+      <KelasList />
     </>
   );
-}
-
-export async function getStaticProps() {
-  const kelas = await (await fetch(`${EXT_API}/class`)).json();
-  return {
-    props: { kelas },
-  };
 }

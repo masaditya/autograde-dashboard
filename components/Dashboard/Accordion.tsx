@@ -1,4 +1,4 @@
-import { Avatar, Collapse, Space, Button } from "antd";
+import { Avatar, Collapse, Space, Button, Result } from "antd";
 import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
@@ -58,34 +58,41 @@ const BodyPanel = ({ detail, repo_url }) => (
   </Space>
 );
 
-export const Accordion = () => {
+export const Accordion = ({ data }) => {
   const [session, loading] = useSession();
-  const [data, setData] = useState([]);
   const { studentClass, isDosen } = useContext(AppContext);
   const { getFetch } = useFetcher();
 
-  useEffect(() => {
-    if (!loading) {
-      getData(session.user);
-    }
-  }, [loading]);
+  // useEffect(() => {
+  //   if (!loading) {
+  //     getData(session.user);
+  //   }
+  // }, [loading]);
 
-  const getData = useCallback(async (user) => {
-    getFetch("/assignment/" + user.id).then((res) => {
-      setData(res);
-    });
-  }, []);
+  // const getData = useCallback(async (user) => {
+  //   getFetch("/assignment/" + user.id).then((res) => {
+  //     setData(res);
+  //   });
+  // }, []);
 
   return (
     <>
-      <Collapse defaultActiveKey={["1"]} expandIconPosition="right">
-        {data &&
-          data.map((item, i) => (
+      {data.length > 0 ? (
+        <Collapse defaultActiveKey={["1"]} expandIconPosition="right">
+          {data.map((item, i) => (
             <Panel header={<HeaderPanel {...item} />} key={i}>
               <BodyPanel {...item} />
             </Panel>
           ))}
-      </Collapse>
+        </Collapse>
+      ) : (
+        <Result
+          status="404"
+          title="404"
+          subTitle="Data Kosong!"
+          extra={<Button type="primary">Back Home</Button>}
+        />
+      )}
     </>
   );
 };

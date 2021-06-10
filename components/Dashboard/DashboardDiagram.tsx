@@ -8,18 +8,31 @@ import {
   Layout,
   Image,
   Divider,
+  Alert,
+  Button
 } from "antd";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import { useEffect, useMemo, useState } from "react";
 import Title from "antd/lib/typography/Title";
 import { useSession } from "next-auth/client";
+import { useFetcher } from "lib/useFetcher";
+import Link from "next/link";
 
-export const DashboardDiagram = ({ tugas = [] }) => {
+export const DashboardDiagram = () => {
   const [session, loading] = useSession();
+  const [tugas, setTugas] = useState<any>([]);
   const [user, setUser] = useState<any>();
+  const { getFetch } = useFetcher();
 
   useEffect(() => {
-    if (!loading) setUser(session.user);
+    if (!loading) {
+      setUser(session.user);
+      // @ts-ignore
+      getFetch("/assignment/" + session.user.id).then((res) => {
+        console.log(res);
+        setTugas(res);
+      });
+    }
   }, [loading]);
 
   const benar = useMemo(() => {
@@ -49,34 +62,56 @@ export const DashboardDiagram = ({ tugas = [] }) => {
   return (
     <>
       <Layout>
+        {!loading && user &&
+          // @ts-ignore
+          !user.kelas.length > 0 && (
+            <Alert
+              message="Bergabung Kelas Baru"
+              description={ <p> Klik <Link href="/mhs/kelas">disini</Link> untuk melanjutkan ke kelas  </p> }
+              type="info"
+              showIcon
+            />
+          )}
         <Divider orientation="left">Statistik</Divider>
         <Row gutter={24}>
           <Col span={8}>
             <Card>
-              <Space>
-                <Progress type="circle" percent={100} />
-                {/* <Title level={3}> Kelas di ikuti : { !loading && user.kelas && "0"} </Title> */}
-              </Space>
+              {!loading && tugas.length > 0 ? (
+                <Space size="large" wrap>
+                  <Progress type="circle" percent={100} status="success" />
+                  <Title level={4}>Tugas Terkumpul : {tugas.length}</Title>
+                </Space>
+              ) : (
+                <Skeleton active />
+              )}
             </Card>
           </Col>
           <Col span={8}>
             <Card>
-              <Space>
-                <Progress
-                  type="circle"
-                  percent={(salah / total) * 100}
-                  status="exception"
-                />
-                <Title level={3}> Jawaban salah : {salah} </Title>
-              </Space>
+              {!loading && user ? (
+                <Space size="large" wrap>
+                  <Progress
+                    type="circle"
+                    percent={(salah / total) * 100}
+                    status="exception"
+                  />
+                  <Title level={4}> Jawaban benar : {salah} </Title>
+                </Space>
+              ) : (
+                <Skeleton active />
+              )}
             </Card>
           </Col>
           <Col span={8}>
             <Card>
-              <Space>
-                <Progress type="circle" percent={(benar / total) * 100} />
-                <Title level={3}> Jawaban benar : {benar} </Title>
-              </Space>
+              {!loading && user ? (
+                <Space size="large" wrap>
+                  <Progress type="circle" percent={(benar / total) * 100} />
+                  <Title level={4}> Jawaban benar : {benar} </Title>
+                </Space>
+              ) : (
+                <Skeleton active />
+              )}
             </Card>
           </Col>
         </Row>
@@ -90,6 +125,7 @@ export const DashboardDiagram = ({ tugas = [] }) => {
                 <>
                   <Space direction="vertical">
                     <Space> Nama : {user.name || ""} </Space>
+                    <Space> Username : {user.username || ""} </Space>
                     <Space> Email : {user.email || ""} </Space>
                   </Space>
                 </>

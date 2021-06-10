@@ -12,7 +12,7 @@ import {
   EyeOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-export const KelasList = ({ classes }) => {
+export const KelasList = () => {
   const [session, loading] = useSession();
   const [isLoading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -24,15 +24,14 @@ export const KelasList = ({ classes }) => {
   }, [loading]);
 
   const getData = useCallback(() => {
-    // getFetch("/class/dosen/"+session.user.id).then((res) => {
-    //   // setKelas(res);
-    //   console.log(res);
-    // });
-    const filteredClass = classes.filter(
-      // @ts-ignore
-      (item) => item.teacher == session.user.id
-    );
-    setKelas(filteredClass);
+    getFetch("/class/").then((res) => {
+      // setKelas(res);
+      const filteredClass = res.filter(
+        // @ts-ignore
+        (item) => item.teacher == session.user.id
+      );
+      setKelas(filteredClass);
+    });
   }, [loading, session]);
 
   const onCreate = useCallback(
@@ -82,7 +81,7 @@ export const KelasList = ({ classes }) => {
                   <DeleteOutlined key="setting" />,
                   <EditOutlined key="edit" />,
                   <Tooltip title="Lihat Kelas">
-                    <Link href={"/kelas/"+item.class}>
+                    <Link href={"/kelas/" + item.class}>
                       <EyeOutlined key="ellipsis" />
                     </Link>
                   </Tooltip>,

@@ -1,26 +1,44 @@
 import { Tag, Popconfirm, Button, Table, Space } from "antd";
 import { EXT_API } from "constant";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { EyeOutlined, DeleteOutlined } from "@ant-design/icons";
 import Text from "antd/lib/typography/Text";
 import Link from "next/link";
 import { useFetcher } from "lib/useFetcher";
-export default function MhsKelas({ kelas }) {
-  const { deleteFetch } = useFetcher();
-  const te = useMemo(() => {
-    return kelas[0].student;
-  }, [kelas]);
+import { useRouter } from "next/router";
 
-  const onSubmitDeleteMhs = useCallback((record) => {
-    console.log({ kelas: kelas[0], student: record });
-    deleteFetch("/user", { kelas: kelas[0], student: record })
-      .then((res) => {
+export default function MhsKelas() {
+  const { query } = useRouter();
+  const [student, setStudent] = useState([]);
+  const [kelas, setKelas] = useState<any>();
+  const { deleteFetch, getFetch } = useFetcher();
+
+  useEffect(() => {
+    query.id &&
+      getFetch("/class/" + query.id).then((res) => {
+        setStudent(res[0].student);
         console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
+        setKelas(res[0]);
       });
-  }, []);
+  }, [query]);
+
+  // const te = useMemo(() => {
+  //   return kelas[0].student;
+  // }, [kelas]);
+
+  const onSubmitDeleteMhs = useCallback(
+    (record) => {
+      console.log({ kelas: kelas, student: record });
+      deleteFetch("/user", { kelas: kelas, student: record })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    [kelas]
+  );
 
   const columns = [
     {
@@ -34,7 +52,7 @@ export default function MhsKelas({ kelas }) {
     {
       title: "Email",
       dataIndex: "email",
-      key: "email",
+      key: "email", 
       render: (text) => <a>{text || "-"}</a>,
     },
     {
@@ -42,7 +60,7 @@ export default function MhsKelas({ kelas }) {
       key: "action",
       render: (text, record) => (
         <Popconfirm
-          title={`Apakah anda akan menghapus ${record.name} dari kelas ${kelas[0].class}-${kelas[0].matkul}`}
+          title={`Apakah anda akan menghapus ${record.name} dari kelas ?`}
           onConfirm={() => onSubmitDeleteMhs(record)}
           onCancel={() => {}}
           okText="Yes"
@@ -55,24 +73,10 @@ export default function MhsKelas({ kelas }) {
       ),
     },
   ];
+
   return (
     <>
-      <Table columns={columns} dataSource={te} rowKey="_id" />
+      <Table columns={columns} dataSource={student} rowKey="_id" />
     </>
   );
-}
-
-export async function getStaticPaths() {
-  const res = await fetch(`${EXT_API}/class`);
-  const kelases = await res.json();
-  const paths = kelases.map((kelas) => ({
-    params: { id: kelas.class },
-  }));
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps({ params }) {
-  const res = await fetch(`${EXT_API}/class/${params.id}`);
-  const kelas = await res.json();
-  return { props: { kelas } };
 }

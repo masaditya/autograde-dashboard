@@ -7,9 +7,8 @@ const RecapTable = () => {
   const [filteredTugas, setFilteredTugas] = useState();
   const [data, setData] = useState([]);
   const { getFetch } = useFetcher();
-  const [repoFilter, setRepoFilter] = useState()
-  const [classFilter, setClassFilter] = useState()
-
+  const [repoFilter, setRepoFilter] = useState([]);
+  const [classFilter, setClassFilter] = useState();
 
   useEffect(() => {
     getData();
@@ -17,21 +16,28 @@ const RecapTable = () => {
     getRepo();
   }, []);
 
-  const getData = useCallback(async () => {
+  const getData = () => {
     getFetch("/assignment").then((res) => {
       setData(res);
+      let arr = [];
+      res.forEach((item) => {
+        let tmp = item.repo_name.split("-");
+        var index = arr.findIndex((x) => x.text == tmp[1]);
+        index === -1 && arr.push({ text: tmp[1], value: tmp[1] });
+      });
+      setRepoFilter(arr);
     });
-  }, []);
+  };
 
   const getRepo = useCallback(async () => {
     getFetch("/repo").then((res) => {
-      setRepoFilter(res)
+      setRepoFilter(res);
     });
   }, []);
 
   const getClass = useCallback(async () => {
     getFetch("/class").then((res) => {
-      setClassFilter(res)
+      setClassFilter(res);
     });
   }, []);
 
@@ -76,7 +82,7 @@ const RecapTable = () => {
         a.pop();
         return <>{a.join("-")}</>;
       },
-      filters: [],
+      filters: [...repoFilter],
       filteredValue: filteredTugas || null,
       onFilter: (value, record) => record.repo_name.includes(value),
       ellipsis: true,

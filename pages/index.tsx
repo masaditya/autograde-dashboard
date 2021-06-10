@@ -1,24 +1,15 @@
 import { useSession } from "next-auth/client";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { AppContext } from "context/ContextWrapper";
-import { Modal, Card, Space, Button, notification } from "antd";
+import { Modal, Card, Space, Button, notification, Alert } from "antd";
 import { API_KELAS, EXT_API, JOIN_CLASS } from "constant";
 import { Accordion } from "components/Dashboard/Accordion";
 import { useFetcher } from "lib/useFetcher";
 import { DashboardDiagram } from "components/Dashboard/DashboardDiagram";
+import DosenDashboard from 'components/Dashboard/DosenDashboard';
 
-export async function getStaticProps() {
-  const classes = await (await fetch(API_KELAS)).json();
-  const res = await (await fetch(EXT_API + "/assignment")).json();
-  return {
-    props: {
-      classes,
-      tugas: res,
-    },
-  };
-}
 
-export default function Home({ classes, tugas }) {
+export default function Home() {
   const [session, loading] = useSession();
   const { studentClass, isDosen } = useContext(AppContext);
   const [visible, setVisible] = useState(false);
@@ -26,47 +17,8 @@ export default function Home({ classes, tugas }) {
   const { putFetch } = useFetcher();
 
   useEffect(() => {
-    !loading && !isDosen && !studentClass
-      ? setVisible(true)
-      : setVisible(false);
+    !loading && !isDosen ? setVisible(true) : setVisible(false);
   }, [loading]);
 
-  
-
-  return (
-    <>
-      {/* <Modal
-        visible={visible}
-        onCancel={() => setVisible(false)}
-        footer={null}
-        title="Bergabung ke Kelas untuk melanjutkan"
-      >
-        <Space size={[8, 16]} wrap align="center">
-          {classes &&
-            classes.classes.map((item, i) => {
-              return (
-                <Card
-                  key={i}
-                  size="small"
-                  title={item.class}
-                  extra={
-                    <Button
-                      disabled={isLoading}
-                      loading={isLoading}
-                      onClick={() => onJoin(item)}
-                    >
-                      Join
-                    </Button>
-                  }
-                  style={{ width: 200 }}
-                >
-                  <p>{item.matkul}</p>
-                </Card>
-              );
-            })}
-        </Space>
-      </Modal> */}
-      <DashboardDiagram tugas={tugas} />
-    </>
-  );
+  return <>{visible ? <DashboardDiagram /> : <DosenDashboard />}</>;
 }

@@ -1,27 +1,20 @@
-import { EXT_API } from "constant";
 import { Accordion } from "components/Dashboard/Accordion";
+import { useRouter } from "next/router";
+import { useFetcher } from "lib/useFetcher";
+import { useEffect, useState } from "react";
+import { Spin } from "antd";
+export default function MhsDetail(props) {
+  const { query } = useRouter();
+  const { getFetch } = useFetcher();
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-export default function MhsDetail({ tugas }) {
-  console.log(tugas);
-  return (
-    <>
-      <Accordion />
-    </>
-  );
-}
+  useEffect(() => {
+    getFetch("/assignment/" + query.id).then((res) => {
+      setData(res);
+      setIsLoading(false);
+    });
+  }, [query.id]);
 
-export async function getStaticPaths() {
-  const res = await fetch(`${EXT_API}/user`);
-  const students = await res.json();
-  const paths = students.map((st) => ({
-    params: { id: st.id.toString() },
-  }));
-  return { paths, fallback: false };
-}
-
-export async function getStaticProps({ params }) {
-  console.log(`${EXT_API}/user/${params.id}`);
-  const res = await fetch(`${EXT_API}/user/${params.id}`);
-  const tugas = await res.json();
-  return { props: { tugas } };
+  return <>{!isLoading ? <Accordion data={data} /> : <Spin size="large" />}</>;
 }
