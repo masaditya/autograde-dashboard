@@ -95,7 +95,7 @@ export const DashboardDiagram = () => {
                     percent={(salah / total) * 100}
                     status="exception"
                   />
-                  <Title level={4}> Jawaban benar : {salah} </Title>
+                  <Title level={4}> Jawaban Salah : {salah} </Title>
                 </Space>
               ) : (
                 <Skeleton active />
@@ -107,7 +107,7 @@ export const DashboardDiagram = () => {
               {!loading && user ? (
                 <Space size="large" wrap>
                   <Progress type="circle" percent={(benar / total) * 100} />
-                  <Title level={4}> Jawaban benar : {benar} </Title>
+                  <Title level={4}> Jawaban Benar : {benar} </Title>
                 </Space>
               ) : (
                 <Skeleton active />
