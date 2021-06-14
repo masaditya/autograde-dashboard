@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Divider, Card, Space, notification, Result } from "antd";
+import { Divider, Card, Space, notification, Result, Spin } from "antd";
 import { EXT_API } from "constant";
 import { useFetcher } from "lib/useFetcher";
 import { useSession } from "next-auth/client";
@@ -18,6 +18,7 @@ export default function Kelasku() {
     if (!loading) {
       setUserKelas(session.user.kelas);
       filterKelas(session.user.kelas);
+      setIsLoading(false);
     }
   }, [loading]);
 
@@ -64,49 +65,61 @@ export default function Kelasku() {
   return (
     <>
       <Divider orientation="left">Kelas yang diikuti</Divider>
-      {userKelas.length > 0 ? (
-        <Space size={[8, 16]} wrap>
-          {userKelas.map((item, i) => {
-            return (
-              <Card
-                key={i}
-                size="small"
-                title={item.class}
-                style={{ width: 300 }}
-              >
-                <p>{item.matkul}</p>
-              </Card>
-            );
-          })}
-        </Space>
+      {isLoading ? (
+        <>
+          {userKelas.length > 0 ? (
+            <Space size={[8, 16]} wrap>
+              {userKelas.map((item, i) => {
+                return (
+                  <Card
+                    key={i}
+                    size="small"
+                    title={item.class}
+                    style={{ width: 300 }}
+                  >
+                    <p>{item.matkul}</p>
+                  </Card>
+                );
+              })}
+            </Space>
+          ) : (
+            <Result
+              icon={<CarryOutOutlined />}
+              title="Belum Terdaftar dikelas, silahkan pilih kelas yang tersedia"
+            />
+          )}
+        </>
       ) : (
-        <Result
-          icon={<CarryOutOutlined />}
-          title="Belum Terdaftar dikelas, silahkan pilih kelas yang tersedia"
-        />
+        <Spin size="large" />
       )}
       <Divider orientation="left">Kelas tersedia</Divider>
-      {kelas.length > 0 ? (
-        <Space size={[8, 16]} wrap>
-          {kelas.map((item, i) => {
-            return (
-              <Card
-                key={i}
-                size="small"
-                title={item.class}
-                extra={<a onClick={() => onJoin(item)}>Bergabung</a>}
-                style={{ width: 300 }}
-              >
-                <p>{item.matkul}</p>
-              </Card>
-            );
-          })}
-        </Space>
+      {isLoading ? (
+        <>
+          {kelas.length > 0 ? (
+            <Space size={[8, 16]} wrap>
+              {kelas.map((item, i) => {
+                return (
+                  <Card
+                    key={i}
+                    size="small"
+                    title={item.class}
+                    extra={<a onClick={() => onJoin(item)}>Bergabung</a>}
+                    style={{ width: 300 }}
+                  >
+                    <p>{item.matkul}</p>
+                  </Card>
+                );
+              })}
+            </Space>
+          ) : (
+            <Result
+              icon={<CarryOutOutlined />}
+              title="Tidak ada kelas tersedia saat ini."
+            />
+          )}
+        </>
       ) : (
-        <Result
-          icon={<CarryOutOutlined />}
-          title="Tidak ada kelas tersedia saat ini."
-        />
+        <Spin size="large" />
       )}
     </>
   );
