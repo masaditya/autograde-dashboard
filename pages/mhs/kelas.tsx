@@ -95,9 +95,9 @@ export default function Kelasku() {
       <Divider orientation="left">Kelas tersedia</Divider>
       {!isLoading ? (
         <>
-          {kelas.length > 0 ? (
+          {availKelas.length > 0 ? (
             <Space size={[8, 16]} wrap>
-              {kelas.map((item, i) => {
+              {availKelas.map((item, i) => {
                 return (
                   <Card
                     key={i}
