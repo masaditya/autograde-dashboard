@@ -65,7 +65,7 @@ export default function Kelasku() {
   return (
     <>
       <Divider orientation="left">Kelas yang diikuti</Divider>
-      {isLoading ? (
+      {!isLoading ? (
         <>
           {userKelas.length > 0 ? (
             <Space size={[8, 16]} wrap>
@@ -93,7 +93,7 @@ export default function Kelasku() {
         <Spin size="large" />
       )}
       <Divider orientation="left">Kelas tersedia</Divider>
-      {isLoading ? (
+      {!isLoading ? (
         <>
           {kelas.length > 0 ? (
             <Space size={[8, 16]} wrap>
