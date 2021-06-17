@@ -16,14 +16,14 @@ export default function MhsKelas() {
   useEffect(() => {
     query.id &&
       getFetch("/class/" + query.id).then((res) => {
-        setStudent(res[0].student);
+        setStudent(res.student);
         console.log(res);
-        setKelas(res[0]);
+        setKelas(res);
       });
   }, [query]);
 
   // const te = useMemo(() => {
-  //   return kelas[0].student;
+  //   return kelas.student;
   // }, [kelas]);
 
   const onSubmitDeleteMhs = useCallback(

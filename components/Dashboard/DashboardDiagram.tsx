@@ -76,7 +76,7 @@ export const DashboardDiagram = () => {
         <Row gutter={24}>
           <Col span={8}>
             <Card>
-              {!loading && tugas.length > 0 ? (
+              {!loading ? (
                 <Space size="large" wrap>
                   <Progress type="circle" percent={100} status="success" />
                   <Title level={4}>Tugas Terkumpul : {tugas.length}</Title>
