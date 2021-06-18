@@ -30,11 +30,11 @@ export default function Kelasku() {
 
   const filterKelas = useCallback(
     (uk) => {
-      let tmpId = uk.map((item) => item.id);
+      let tmpId = uk.map((item) => item._id);
       let tmpKelas = [...kelas];
       let kelasFix = [];
       tmpKelas.forEach((el) => {
-        if (!tmpId.includes(el["id"])) {
+        if (!tmpId.includes(el["_id"])) {
           kelasFix.push(el);
         }
       });
@@ -52,14 +52,22 @@ export default function Kelasku() {
         student: session.user,
         kelas: item,
       });
+      // console.log(
+      //   JSON.stringify({
+      //     student: session.user,
+      //     kelas: item,
+      //   })
+      // );
       notification.open({
         message: "Sukses Bergabung Kelas",
         description: "Selamat datang di kelas " + item.class + " !",
       });
+      // console.log(userKelas);
+      setUserKelas([...userKelas, item]);
       filterKelas([...userKelas, item]);
       setIsLoading(false);
     },
-    [session, loading]
+    [session, loading, kelas, availKelas]
   );
 
   return (
