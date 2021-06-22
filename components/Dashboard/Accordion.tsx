@@ -7,7 +7,7 @@ import { useFetcher } from "lib/useFetcher";
 import Link from "next/link";
 const { Panel } = Collapse;
 
-const HeaderPanel = ({ avatar, name, correct, detail, last_push }) => (
+const HeaderPanel = ({ avatar, name, correct, detail, last_push,repo_name }) => (
   <div
     style={{
       display: "flex",
@@ -19,6 +19,10 @@ const HeaderPanel = ({ avatar, name, correct, detail, last_push }) => (
     <div>
       <small>Nama Mahasiswa</small>
       <p> {name} </p>
+    </div>
+    <div>
+      <small>Nama Repository</small>
+      <p> {repo_name} </p>
     </div>
     <div>
       <small>Push Terakhir</small>

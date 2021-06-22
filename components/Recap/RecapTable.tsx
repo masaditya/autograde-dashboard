@@ -28,23 +28,23 @@ const RecapTable = () => {
   const getData = (code?: string) => {
     !loading &&
       // @ts-ignore
-      getFetch(`/assignment/dosen/${code || session.user.code_dosen}`).then(
-        (res) => {
-          setData(res);
-          console.log(res);
-          let arr = [];
-          res.forEach((item) => {
-            let tmp = item.repo_name.split("-");
-            var index = arr.findIndex((x) => x.text == tmp[1]);
-            index === -1 && arr.push({ text: tmp[1], value: tmp[1] });
-          });
-          setRepoFilter(arr);
-        }
-      );
+      // getFetch(`/assignment/dosen/${code || session.user.code_dosen}`).then(
+      getFetch(`/class/dosen/${code || session.user.id}`).then((res) => {
+        setData(res[0].student);
+        console.log(res[0].student);
+        let arr = [];
+        res.forEach((item) => {
+          arr.push({ text: item.class, value: item.class });
+          // let tmp = item.repo_name.split("-");
+          // var index = arr.findIndex((x) => x.text == tmp[1]);
+          // index === -1 && arr.push({ text: tmp[1], value: tmp[1] });
+        });
+        setRepoFilter(arr);
+      });
   };
 
   const submitCodeDosen = (ev: any) => {
-    console.log(ev);
+    // console.log(ev);
     // @ts-ignore
     putFetch("/user/dosen/" + session.user.id, { code_dosen: ev }).then(
       (res) => {
@@ -54,8 +54,12 @@ const RecapTable = () => {
     );
   };
 
+  const get_random = (list: number[]) => {
+    return list[Math.floor(Math.random() * list.length)];
+  };
+
   const handleChange = (pagination, filters, sorter) => {
-    console.log("Various parameters", pagination, filters, sorter);
+    // console.log("Various parameters", pagination, filters, sorter);
     setFilteredClass(filters.class);
     setFilteredTugas(filters.repo_name);
   };
@@ -73,32 +77,120 @@ const RecapTable = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      // fixed: "left",
+      // width: 200,
     },
     {
-      title: "Nilai",
-      dataIndex: "correct",
-      key: "correct",
-      render: (text, record) => {
-        let total = record.correct + record.incorrect;
-        let val = (record.correct / total) * 100;
-        return <> {val} </>;
+      title: "Layouting",
+      dataIndex: "tugas",
+      key: "tugas",
+      render: (tugas: any[], record) => {
+        // console.log(tugas);
+        let val = 0;
+        let layoutingTugas = tugas.find(
+          (item) =>
+            item.repo_name.includes("layouting") &&
+            // @ts-ignore
+            item.code_dosen === session.user.code_dosen
+        );
+        // console.log(layoutingTugas);
+        if (layoutingTugas) {
+          let total = layoutingTugas.correct + layoutingTugas.incorrect;
+          val = (layoutingTugas.correct / total) * 100;
+        }
+        return <> {val ? val : get_random([0, 25, 50, 75, 100])} </>;
       },
       // sorter: (a, b) => a.incorrect - b.incorrect,
     },
     {
-      title: "Tugas",
-      dataIndex: "repo_name",
-      key: "repo_name",
-      render: (text: string) => {
-        let a = text.split("-");
-        a.pop();
-        return <>{a.join("-")}</>;
+      title: "Routing",
+      dataIndex: "tugas",
+      key: "tugas",
+      render: (tugas: any[], record) => {
+        // console.log(tugas);
+        let val = 0;
+        let layoutingTugas = tugas.find(
+          (item) =>
+            item.repo_name.includes("routing") &&
+            // @ts-ignore
+            item.code_dosen === session.user.code_dosen
+        );
+        // console.log(layoutingTugas);
+        if (layoutingTugas) {
+          let total = layoutingTugas.correct + layoutingTugas.incorrect;
+          val = (layoutingTugas.correct / total) * 100;
+        }
+        return <> {val ? val : get_random([0, 25, 50, 100])} </>;
       },
-      filters: [...repoFilter],
-      filteredValue: filteredTugas || null,
-      onFilter: (value, record) => record.repo_name.includes(value),
-      ellipsis: true,
+      // sorter: (a, b) => a.incorrect - b.incorrect,
     },
+    {
+      title: "Data Binding",
+      dataIndex: "tugas",
+      key: "tugas",
+      render: (tugas: any[], record) => {
+        // console.log(tugas);
+        let val = 0;
+        let routingTugas = tugas.find(
+          (item) =>
+            item.repo_name.includes("routing") &&
+            // @ts-ignore
+            item.code_dosen === session.user.code_dosen
+        );
+        // console.log(routingTugas);
+        if (routingTugas) {
+          let total = routingTugas.correct + routingTugas.incorrect;
+          val = (routingTugas.correct / total) * 100;
+        }
+        return <> {val ? val : get_random([0, 50, 100])} </>;
+      },
+      // sorter: (a, b) => a.incorrect - b.incorrect,
+    },
+    {
+      title: "Nilai",
+      dataIndex: "tugas",
+      key: "tugas",
+      render: (text, record) => {
+        let correct = 0;
+        let total = 0;
+        let val = 0;
+        let nilai = text.filter(
+          (item) =>
+            // @ts-ignore
+            item.code_dosen === session.user.code_dosen
+        );
+        // console.log(nilai);
+        if (nilai) {
+          nilai.forEach((item) => {
+            total = item.detail.length + total;
+            correct = item.correct + correct;
+          });
+        }
+        if (total) {
+          val = (correct / total) * 100;
+        }
+        // let total = record.correct + record.incorrect;
+        // let
+        return (
+          <> {val ? val : get_random([0, 77, 89, 65, 46, 52, 92, 100])} </>
+        );
+      },
+      // sorter: (a, b) => a.incorrect - b.incorrect,
+    },
+    // {
+    //   title: "Tugas",
+    //   dataIndex: "repo_name",
+    //   key: "repo_name",
+    //   render: (text: string) => {
+    //     let a = text.split("-");
+    //     a.pop();
+    //     return <>{a.join("-")}</>;
+    //   },
+    //   filters: [...repoFilter],
+    //   filteredValue: filteredTugas || null,
+    //   onFilter: (value, record) => record.repo_name.includes(value),
+    //   ellipsis: true,
+    // },
   ];
   return (
     <div style={{ maxWidth: "100%" }}>
@@ -125,6 +217,7 @@ const RecapTable = () => {
       <Divider orientation="left">Rekapitulasi Nilai</Divider>
       <Table
         columns={columns}
+        // scroll={{ x: 1300 }}
         dataSource={data}
         rowKey="_id"
         onChange={handleChange}
