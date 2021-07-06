@@ -159,25 +159,20 @@ const RecapTable = () => {
             // @ts-ignore
             item.code_dosen === session.user.code_dosen
         );
-        // console.log(nilai);
         if (nilai) {
           nilai.forEach((item) => {
             let t = item.correct + item.incorrect;
-            val = item.correct / t + val;
-            // let total = bindingTugas.correct + bindingTugas.incorrect;
-            // val = (bindingTugas.correct / total) * 100;
-            // total = item.detail.length + total;
-            // correct = item.correct + correct;
+            let tmp = item.correct / t;
+            val = val + tmp;
           });
         }
-        // if (total) {
-        //   val = (correct / total) * 100;
-        // }
-        // let total = record.correct + record.incorrect;
-        // let
+
         return <> {val ? (val / 3) * 100 : 0} </>;
       },
-      // sorter: (a, b) => a.incorrect - b.incorrect,
+      sorter: (a, b) => {
+        console.log("a b", a, b);
+        return 0;
+      },
     },
     // {
     //   title: "Tugas",
