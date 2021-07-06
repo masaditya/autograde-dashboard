@@ -162,16 +162,20 @@ const RecapTable = () => {
         // console.log(nilai);
         if (nilai) {
           nilai.forEach((item) => {
-            total = item.detail.length + total;
-            correct = item.correct + correct;
+            let t = item.correct + item.incorrect;
+            val = item.correct / t + val;
+            // let total = bindingTugas.correct + bindingTugas.incorrect;
+            // val = (bindingTugas.correct / total) * 100;
+            // total = item.detail.length + total;
+            // correct = item.correct + correct;
           });
         }
-        if (total) {
-          val = (correct / total) * 100;
-        }
+        // if (total) {
+        //   val = (correct / total) * 100;
+        // }
         // let total = record.correct + record.incorrect;
         // let
-        return <> {val ? val : 0} </>;
+        return <> {val ? (val / 3) * 100 : 0} </>;
       },
       // sorter: (a, b) => a.incorrect - b.incorrect,
     },
