@@ -98,7 +98,7 @@ const RecapTable = () => {
           let total = layoutingTugas.correct + layoutingTugas.incorrect;
           val = (layoutingTugas.correct / total) * 100;
         }
-        return <> {val ? val : get_random([0, 25, 50, 75, 100])} </>;
+        return <> {val ? val : 0} </>;
       },
       // sorter: (a, b) => a.incorrect - b.incorrect,
     },
@@ -120,7 +120,7 @@ const RecapTable = () => {
           let total = layoutingTugas.correct + layoutingTugas.incorrect;
           val = (layoutingTugas.correct / total) * 100;
         }
-        return <> {val ? val : get_random([0, 25, 50, 100])} </>;
+        return <> {val ? val : 0} </>;
       },
       // sorter: (a, b) => a.incorrect - b.incorrect,
     },
@@ -131,18 +131,18 @@ const RecapTable = () => {
       render: (tugas: any[], record) => {
         // console.log(tugas);
         let val = 0;
-        let routingTugas = tugas.find(
+        let bindingTugas = tugas.find(
           (item) =>
-            item.repo_name.includes("routing") &&
+            item.repo_name.includes("binding") &&
             // @ts-ignore
             item.code_dosen === session.user.code_dosen
         );
-        // console.log(routingTugas);
-        if (routingTugas) {
-          let total = routingTugas.correct + routingTugas.incorrect;
-          val = (routingTugas.correct / total) * 100;
+        // console.log(bindingTugas);
+        if (bindingTugas) {
+          let total = bindingTugas.correct + bindingTugas.incorrect;
+          val = (bindingTugas.correct / total) * 100;
         }
-        return <> {val ? val : get_random([0, 50, 100])} </>;
+        return <> {val ? val : 0} </>;
       },
       // sorter: (a, b) => a.incorrect - b.incorrect,
     },
@@ -171,9 +171,7 @@ const RecapTable = () => {
         }
         // let total = record.correct + record.incorrect;
         // let
-        return (
-          <> {val ? val : get_random([0, 77, 89, 65, 46, 52, 92, 100])} </>
-        );
+        return <> {val ? val : 0} </>;
       },
       // sorter: (a, b) => a.incorrect - b.incorrect,
     },
