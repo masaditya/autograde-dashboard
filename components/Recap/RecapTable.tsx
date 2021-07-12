@@ -31,7 +31,6 @@ const RecapTable = () => {
       // getFetch(`/assignment/dosen/${code || session.user.code_dosen}`).then(
       getFetch(`/class/dosen/${code || session.user.id}`).then((res) => {
         setData(res[0].student);
-        console.log(res[0].student);
         let arr = [];
         res.forEach((item) => {
           arr.push({ text: item.class, value: item.class });
@@ -167,11 +166,37 @@ const RecapTable = () => {
           });
         }
 
-        return <> {val ? (val / 3) * 100 : 0} </>;
+        return <> {val ? ((val / 3) * 100).toFixed(2) : 0} </>;
       },
       sorter: (a, b) => {
+        let aval = 0
+        let bval = 0
         console.log("a b", a, b);
-        return 0;
+        let nilaia = a.tugas.filter(
+          (item) =>
+            // @ts-ignore
+            item.code_dosen === session.user.code_dosen
+        );
+        if (nilaia) {
+          nilaia.forEach((item) => {
+            let t = item.correct + item.incorrect;
+            let tmp = item.correct / t;
+            aval = aval + tmp;
+          });
+        }
+        let nilaib = b.tugas.filter(
+          (item) =>
+            // @ts-ignore
+            item.code_dosen === session.user.code_dosen
+        );
+        if (nilaib) {
+          nilaib.forEach((item) => {
+            let t = item.correct + item.incorrect;
+            let tmp = item.correct / t;
+            bval = bval + tmp;
+          });
+        }
+        return a-b;
       },
     },
     // {
