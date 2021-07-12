@@ -97,7 +97,7 @@ const RecapTable = () => {
           let total = layoutingTugas.correct + layoutingTugas.incorrect;
           val = (layoutingTugas.correct / total) * 100;
         }
-        return <> {val ? val : 0} </>;
+        return <> {val ? val.toFixed(2) : 0} </>;
       },
       // sorter: (a, b) => a.incorrect - b.incorrect,
     },
@@ -119,7 +119,7 @@ const RecapTable = () => {
           let total = layoutingTugas.correct + layoutingTugas.incorrect;
           val = (layoutingTugas.correct / total) * 100;
         }
-        return <> {val ? val : 0} </>;
+        return <> {val ? val.toFixed(2) : 0} </>;
       },
       // sorter: (a, b) => a.incorrect - b.incorrect,
     },
@@ -141,7 +141,7 @@ const RecapTable = () => {
           let total = bindingTugas.correct + bindingTugas.incorrect;
           val = (bindingTugas.correct / total) * 100;
         }
-        return <> {val ? val : 0} </>;
+        return <> {val ? val.toFixed(2) : 0} </>;
       },
       // sorter: (a, b) => a.incorrect - b.incorrect,
     },
@@ -169,8 +169,8 @@ const RecapTable = () => {
         return <> {val ? ((val / 3) * 100).toFixed(2) : 0} </>;
       },
       sorter: (a, b) => {
-        let aval = 0
-        let bval = 0
+        let aval = 0;
+        let bval = 0;
         console.log("a b", a, b);
         let nilaia = a.tugas.filter(
           (item) =>
@@ -196,7 +196,7 @@ const RecapTable = () => {
             bval = bval + tmp;
           });
         }
-        return a-b;
+        return a - b;
       },
     },
     // {
